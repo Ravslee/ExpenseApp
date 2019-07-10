@@ -1,1 +1,131 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+    font-size: 20px;
+    color: #212529;
+    font-family:'Nanum Gothic', sans-serif;
+
+  }
+  
+  p {
+    line-height: 1.5;
+    margin: 30px 0;
+  }
+  
+  p a {
+    text-decoration: underline;
+  }
+  
+  a {
+    color: #212529;
+    -webkit-transition: all 0.2s;
+    transition: all 0.2s;
+  }
+  
+  a:focus, a:hover {
+    color: #0085A1;
+  }
+.p8{
+    padding: 8px;
+}
+.pv8{
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.ph16{
+    padding-right: 16px;
+    padding-left: 16px;
+}
+
+.p16{
+    padding: 16px;
+}
+.pv16{
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+.ph16{
+    padding-right: 16px;
+    padding-left: 16px;
+}
+
+.p32{
+    padding: 32px;
+}
+.pv32{
+    padding-top: 32px;
+    padding-bottom: 32px;
+}
+
+.ph32{
+    padding-right: 32px;
+    padding-left: 32px;
+}
+.pb32{
+    padding-bottom: 32px;
+}
+
+/* margin */
+.m2{
+    margin: 4px;
+}
+.m4{
+    margin: 4px;
+}
+.m8{
+    margin: 8px;
+}
+.mv8{
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.mh16{
+    margin-right: 16px;
+    margin-left: 16px;
+}
+
+.m16{
+    margin: 16px;
+}
+.mv16{
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.mh16{
+    margin-right: 16px;
+    margin-left: 16px;
+}
+
+.m32{
+    margin: 32px;
+}
+.mt32{
+    margin-top:32px;
+}
+.mt64{
+    margin-top:64px;
+}
+.mv32{
+    margin-top: 32px;
+    margin-bottom: 32px;
+}
+
+.mh32{
+    margin-right: 32px;
+    margin-left: 32px;
+}
+ .mb32{
+    margin-bottom: 32px;
+ }
+ .ml8{
+     margin-left:8px;
+ }
+ .ml16{
+     margin-left:16px;
+ }
+.text-center{
+    text-align: center;
+}

@@ -1,0 +1,8 @@
+<div class="list-group list-group-flush">
+  <a class="list-group-item list-group-item-action " routerLink="" [ngClass]="{'active': step==='home'}"
+    (click)="step='home'">Home</a>
+  <a class="list-group-item list-group-item-action " routerLink="settings" [ngClass]="{'active': step==='settings'}"
+    (click)="step='settings'">Settings</a>
+  <a class="list-group-item list-group-item-action " routerLink="profile" [ngClass]="{'active': step==='profile'}"
+    (click)="step='profile'">Profile</a>
+</div>

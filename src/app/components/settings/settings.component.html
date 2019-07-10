@@ -1,0 +1,39 @@
+<div class="container">
+  <div class="row mt64">
+    <div class="col-4">
+      Total budget
+    </div>
+    <div class="col-4">
+      <input type="text" [ngModel]="totalBudget" class="form-control">
+    </div>
+    <div class="col-4">
+      <button type="button" class="btn btn-primary">Update</button>
+
+    </div>
+  </div>
+
+  <div class="row mt64">
+    <div class="col-4">
+      Categories
+    </div>
+    <div class="col-4">
+      <input type="text" class="form-control">
+    </div>
+    <div class="col-4">
+      <button type="button" class="btn btn-primary">Add </button>
+
+    </div>
+  </div>
+
+
+  <div class="row mt64">
+    <div class="col-6">
+        <div class="categories-block">
+            <div class="list-group list-group-flush">
+                <a class="list-group-item list-group-item-action" *ngFor="let category of categories">{{category}}</a>
+              </div>
+        </div>
+      
+    </div>
+  </div>
+</div>
