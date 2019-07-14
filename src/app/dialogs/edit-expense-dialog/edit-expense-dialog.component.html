@@ -1,0 +1,24 @@
+<h4 mat-dialog-title>Edit expense</h4>
+<div mat-dialog-content>
+  <select name="category"  [compareWith]="compareFn" class="custom-select" [(ngModel)]="data.category">
+    <option selected>Choose category...</option>
+    <option *ngFor="let cat of categories" value="{{cat._id}}">{{cat.name}}</option>
+  
+  </select>
+  <p></p>
+  <label for="itemName">Item name</label>
+  <input id="itemName" type="text" name="itemName" class="form-control"  [(ngModel)]="data.itemName"> 
+  <p></p>
+
+  <label for="amount">Amount</label>
+  <input id="amount" type="text" name="amount" class="form-control"  [(ngModel)]="data.amount">
+  <p></p>
+  <label for="expDate">Expense Date</label>
+
+  <input id="expDate" type="date" name="date" class="form-control"  [ngModel]="data.date | date:'yyyy-MM-dd'" (ngModelChange)="data.date = $event">
+
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="cancel()">Cancle</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Save</button>
+</div>

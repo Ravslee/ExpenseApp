@@ -8,8 +8,9 @@ import { BudgetService } from '../../services/budget.service'
 })
 export class SettingsComponent implements OnInit {
 
-  public categories: any = ['item1', 'item2', 'item3', 'item5', 'item2', 'item3', 'item5', 'item1', 'item2', 'item3', 'item5', 'item2', 'item3', 'item5'];
-  public totalBudget: any;
+  public categories: any = [];
+  public totalBudget: any = {};
+  public catName: any;
   constructor(private categorySrv: CategoryService,
     private budgetSrv: BudgetService) { }
 
@@ -29,20 +30,20 @@ export class SettingsComponent implements OnInit {
         }
       })
   }
-  public onUpdateTotalBudget(val: any) {
-    if (!val) {
-      alert("Please enter value for Total budget")
+  public onUpdateTotalBudget() {
+    if (!this.totalBudget.amount) {
+      alert("Please enter value for Total budget");
     }
     if (this.totalBudget && this.totalBudget._id) {
-      this.updateBudget(val, this.totalBudget._id);
+      this.updateBudget(this.totalBudget.amount, this.totalBudget._id);
     } else {
-      this.addBudget(val)
+      this.addBudget(this.totalBudget.amount)
     }
 
   }
 
   updateBudget(val, id) {
-    const budget = { amount: val }
+    const budget = { amount: +val }
     this.budgetSrv
       .updateBudget(id, budget)
       .then((res: any) => {
@@ -61,24 +62,27 @@ export class SettingsComponent implements OnInit {
       .addBudget(budget)
       .then((res: any) => {
         console.log(res);
-        this.totalBudget = res.data;
+        this.loadAllBudgets();
       })
       .catch(e => {
         console.error(e);
       });
   }
 
-  onAddCategory(name: any) {
-    if (!name) {
+  onAddCategory() {
+    if (!this.catName) {
       alert("Please enter category name, to add")
       return;
     }
-    const cat = { name }
+    const cat = { name: this.catName }
     this.categorySrv
       .addCategory(cat)
       .then((res: any) => {
-        alert("New category added successfully");
+        this.catName = '';
         this.loadAllCategories();
+
+        console.log("New category added successfully");
+
       });
   }
 

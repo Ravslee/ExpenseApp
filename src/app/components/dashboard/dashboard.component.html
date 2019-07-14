@@ -1,3 +1,94 @@
-<p>
-  dashboard works!
-</p>
+<div class="container">
+  <div class="row mt16">
+    <div class="col-6">
+
+    </div>
+    <div class="col-6">
+
+    </div>
+  </div>
+  <div class="row mt32">
+    <div class="col">
+      <button mat-button (click)="openAddExpenseModal()">Add expense</button>
+    </div>
+  </div>
+  <div class="row mt32">
+    <div class="col">
+      <table class="table table-borderless">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Category</th>
+            <th scope="col">Item name</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="t-row " *ngFor="let exp of expenses">
+            <th scope="row">
+              <i (click)="editExpense(exp)" class="fas fa-pencil-alt"></i>
+            </th>
+            <td>{{exp.category.name}}</td>
+            <td>{{exp.itemName}}</td>
+
+            <td>{{exp.amount}}</td>
+            <td>{{exp.date |date}}</td>
+          </tr>
+<br>
+
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+ 
+  <!-- Add expense Modal -->
+  <div class="modal fade" id="addExpenseModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Expense</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form #newExpense="ngForm" (ngSubmit)="onClickSubmit(newExpense.value)">
+
+            <select name="category" class="custom-select" ngModel>
+              <option selected>Choose category...</option>
+              <option *ngFor="let cat of categories" value="{{cat._id}}">{{cat.name}}</option>
+            
+            </select>
+            <p></p>
+            <label for="itemName">Item name</label>
+            <input id="itemName" type="text" name="itemName" class="form-control" ngModel> 
+            <p></p>
+
+            <label for="amount">Amount</label>
+            <input id="amount" type="text" name="amount" class="form-control" ngModel>
+            <p></p>
+            <label for="expDate">Expense Date</label>
+
+            <input id="expDate" type="date" name="date" class="form-control" ngModel>
+
+
+            <p></p>
+            <button class="btn " #closeModal id="delete-node" name="button" data-dismiss="modal" type="submit">Close</button>
+
+            <input class="btn btn-primary" type="submit" value="submit" >
+
+          </form>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -19,6 +19,8 @@ export class ExpenseService {
     return this.http.get(host + '/expense').toPromise()
   }
 
+  
+
   public addExpense(expense: any) {
     return this.http.post(host + '/expense', expense).toPromise();
   }
