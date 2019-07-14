@@ -18,7 +18,9 @@ export class ExpenseService {
   public getAllExpenses() {
     return this.http.get(host + '/expense').toPromise()
   }
-
+  public getAllExpenseChartData() {
+    return this.http.get(host + '/expense/chart/data').toPromise()
+  }
   
 
   public addExpense(expense: any) {

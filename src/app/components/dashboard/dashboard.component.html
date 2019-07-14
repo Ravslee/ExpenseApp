@@ -1,18 +1,120 @@
-<div class="container">
-  <div class="row mt16">
+<div class="container-fluid">
+  <div class="row m8">
+
     <div class="col-6">
+      <mat-card class="mt16">
+        <mat-card-title>
+          Budget overview
+        </mat-card-title>
+
+        <hr>
+        <div style="display: block;">
+          <canvas baseChart [data]="daugnatChartConfig.doughnutChartData"
+            [labels]="daugnatChartConfig.doughnutChartLabels" [chartType]="daugnatChartConfig.doughnutChartType"
+            [colors]="daugnatChartConfig.doughnutChartColors" [options]="pieChartOptions">
+          </canvas>
+        </div>
+
+        <div style="text-align: center">
+
+          <small>
+            Total Budget: {{this.totalBudget.amount}}
+
+          </small>
+          <small>
+            Total Expense: {{this.totalExpense}}
+
+          </small>
+
+        </div>
+
+      </mat-card>
 
     </div>
     <div class="col-6">
+      <mat-card class="mt16 ">
+        <mat-card-title>
+          Category wise
+        </mat-card-title>
+        <hr>
+        <div style="display: block;">
+          <canvas baseChart [data]="chartConfig.pieChartData" [labels]="chartConfig.pieChartLabels"
+            [chartType]="chartConfig.pieChartType" [options]="pieChartOptions" [plugins]="chartConfig.pieChartPlugins"
+            [colors]="chartConfig.pieChartColors">
+          </canvas>
+        </div>
 
+        <div>
+
+          <small>
+            <p></p>
+          </small>
+
+
+        </div>
+      </mat-card>
     </div>
+
   </div>
   <div class="row mt32">
     <div class="col">
-      <button mat-button (click)="openAddExpenseModal()">Add expense</button>
+      <button mat-raised-button color="primary" (click)="openAddExpenseModal()">Add expense</button>
     </div>
   </div>
-  <div class="row mt32">
+
+  <div class="row mt16">
+    <div class="col-12">
+      <ngx-datatable style="width: 100%" class="material" [columnMode]="'force'" [rows]="expenses" [headerHeight]="50"
+        [footerHeight]="50" [rowHeight]="50" [limit]="5">
+        <ngx-datatable-column name="Edit">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <i (click)="editExpense(row)" class="fas fa-pencil-alt"></i>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Deleted">
+      
+            <ng-template let-row="row"    ngx-datatable-cell-template>
+            {{row.deleted? 'true':'false'}}
+            </ng-template>
+          </ngx-datatable-column>
+        <ngx-datatable-column name="category">
+      
+          <ng-template let-row="row" [ngClass]="{red: row?.deleted , white: !row?.deleted}"    ngx-datatable-cell-template>
+            {{row.category.name}}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Item Name">
+      
+          <ng-template let-row="row"    ngx-datatable-cell-template>
+            {{row.itemName}}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Amount">
+
+          <ng-template let-row="row"    ngx-datatable-cell-template>
+            {{row.amount}}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Date">
+          
+          <ng-template let-row="row"     ngx-datatable-cell-template>
+            {{row.date|date}}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Edit">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <i (click)="openDeleteExpenseModal(row)" class="far fa-trash-alt"></i>
+          </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>
+    </div>
+  </div>
+
+
+
+
+
+  <!-- <div class="row mt32">
     <div class="col">
       <table class="table table-borderless">
         <thead>
@@ -35,7 +137,7 @@
             <td>{{exp.amount}}</td>
             <td>{{exp.date |date}}</td>
           </tr>
-<br>
+          <br>
 
 
         </tbody>
@@ -43,52 +145,15 @@
     </div>
   </div>
 
- 
-  <!-- Add expense Modal -->
-  <div class="modal fade" id="addExpenseModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Add Expense</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form #newExpense="ngForm" (ngSubmit)="onClickSubmit(newExpense.value)">
-
-            <select name="category" class="custom-select" ngModel>
-              <option selected>Choose category...</option>
-              <option *ngFor="let cat of categories" value="{{cat._id}}">{{cat.name}}</option>
-            
-            </select>
-            <p></p>
-            <label for="itemName">Item name</label>
-            <input id="itemName" type="text" name="itemName" class="form-control" ngModel> 
-            <p></p>
-
-            <label for="amount">Amount</label>
-            <input id="amount" type="text" name="amount" class="form-control" ngModel>
-            <p></p>
-            <label for="expDate">Expense Date</label>
-
-            <input id="expDate" type="date" name="date" class="form-control" ngModel>
-
-
-            <p></p>
-            <button class="btn " #closeModal id="delete-node" name="button" data-dismiss="modal" type="submit">Close</button>
-
-            <input class="btn btn-primary" type="submit" value="submit" >
-
-          </form>
-        </div>
-        <!-- <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div> -->
+  <div class="row mt16">
+    <div class="col">
+      <div *ngFor="let d of totalList ">
+        {{d}}
       </div>
     </div>
-  </div>
+  </div> -->
+
+
+
 
 </div>

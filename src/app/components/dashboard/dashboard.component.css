@@ -1,3 +1,14 @@
 .t-row{
     border: 2px solid rgba(0,0,0,.125);
 }
+
+.mh-240{
+ height: 240px
+}
+
+.red{
+    background: #ef9a9a;
+}
+.white{
+    background: #fff;
+}

@@ -13,6 +13,9 @@ import { MaterialModule } from './material/material.module';
 import { EditExpenseComponent } from './dialogs/edit-expense/edit-expense.component';
 import { EditExpenseDialogComponent } from './dialogs/edit-expense-dialog/edit-expense-dialog.component';
 import { AddExpenseDialogComponent } from './dialogs/add-expense-dialog/add-expense-dialog.component';
+import { ChartsModule } from 'ng2-charts';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { DeleteExpenseDailogComponent } from './dialogs/delete-expense-dailog/delete-expense-dailog.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +26,8 @@ import { AddExpenseDialogComponent } from './dialogs/add-expense-dialog/add-expe
     ProfileComponent,
     EditExpenseComponent,
     EditExpenseDialogComponent,
-    AddExpenseDialogComponent
+    AddExpenseDialogComponent,
+    DeleteExpenseDailogComponent
   ],
   imports: [
     BrowserModule,
@@ -32,11 +36,14 @@ import { AddExpenseDialogComponent } from './dialogs/add-expense-dialog/add-expe
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    ChartsModule,
+    NgxDatatableModule
 
   ],
   entryComponents:[EditExpenseDialogComponent,
-  AddExpenseDialogComponent],
+  AddExpenseDialogComponent,
+  DeleteExpenseDailogComponent],
   providers: [],
   bootstrap: [AppComponent]
 })
