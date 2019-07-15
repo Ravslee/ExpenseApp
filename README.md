@@ -13,7 +13,7 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
 
-#Third party library used 
+## Third party library used 
  * ng2-charts [ng2-charts](https://valor-software.com/ng2-charts/)
  * ngx-datatable [ngx-datatable](https://swimlane.gitbook.io/ngx-datatable/)
  * Lodash [Lodash] (https://lodash.com/)
@@ -22,7 +22,7 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
  * font-awesome for icons [Font-awesome](https://fontawesome.com/)
 
 
-#Screenshots
+## Screenshots
 * Dashboard
 ![dashboard dashboard-page](https://i.imgur.com/L15f1iG.png) 
 
