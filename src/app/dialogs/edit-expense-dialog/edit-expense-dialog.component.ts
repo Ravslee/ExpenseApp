@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CategoryService } from 'src/app/services/category.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-expense-dialog',
@@ -9,11 +10,13 @@ import { CategoryService } from 'src/app/services/category.service';
 })
 export class EditExpenseDialogComponent implements OnInit {
   public categories:any[];
+  public control:FormControl;
+
   constructor(
     public dialogRef: MatDialogRef<EditExpenseDialogComponent>,
     @Inject(MAT_DIALOG_DATA)public data: any,
     private categorySrv: CategoryService) {
-     
+
      }
 
   ngOnInit() {
@@ -36,6 +39,6 @@ export class EditExpenseDialogComponent implements OnInit {
   }
 
   compareFn(c1: any, c2:any): boolean {     
-    return c1 && c2 ? c1.id === c2.id : c1 === c2; 
+    return c1 && c2 ? c1._id === c2._id : c1 === c2; 
 }
 }

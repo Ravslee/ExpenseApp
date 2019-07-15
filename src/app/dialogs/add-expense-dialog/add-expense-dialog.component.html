@@ -2,7 +2,7 @@
 <div mat-dialog-content>
   <select name="category"   class="custom-select" [(ngModel)]="data.category">
     <option selected>Choose category...</option>
-    <option *ngFor="let cat of categories" value="{{cat._id}}">{{cat.name}}</option>
+    <option *ngFor="let cat of categories"  value="{{cat._id}}">{{cat.name}}</option>
   
   </select>
   <p></p>

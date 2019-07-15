@@ -1,10 +1,13 @@
 .side-bar{
     width: 240px;
-    height: calc(100vh - 56px);
+    height: calc(100vh - 48px);
+    position: fixed;
+
 }
 
 .main{
     border-left: 2px solid rgba(0,0,0,.125);
+    margin-left:  240px;
     width: calc(100% - 240px);
     height: calc(100vh - 56px);
 }

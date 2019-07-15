@@ -9,6 +9,10 @@ import { SingleDataSet, Label, monkeyPatchChartJsLegend, monkeyPatchChartJsToolt
 import * as _ from 'lodash';
 import { BudgetService } from 'src/app/services/budget.service';
 import { DeleteExpenseDailogComponent } from 'src/app/dialogs/delete-expense-dailog/delete-expense-dailog.component';
+import { UndoDeleteExpenseDialogComponent } from 'src/app/dialogs/undo-delete-expense-dialog/undo-delete-expense-dialog.component';
+import { Expense } from 'src/app/models/expense';
+import { category } from 'src/app/models/category';
+import { Budget } from 'src/app/models/budget';
 class ChartConfig {
   public pieChartLabels: Label[];
   public pieChartData: SingleDataSet;
@@ -34,29 +38,20 @@ class DaugnatChartConfig {
 })
 export class DashboardComponent implements OnInit {
 
-  private expenses: any = []
-  private categories: any = [];
-  private selectedExpense: any = {};
+  private expenses: Expense[] = []
   public chartConfig = new ChartConfig();
   public daugnatChartConfig = new DaugnatChartConfig();
-  public totalBudget: any = 0;
-  public totalExpense: any = 0;
-  public totalList = [];
+  public totalBudget: Budget = new Budget;
+  public totalExpense: number = 0;
 
   constructor(private expenseSrv: ExpenseService,
-    private categorySrv: CategoryService, public dialog: MatDialog,
+    public dialog: MatDialog,
     private budgetSrv: BudgetService) {
-    this.chartConfig.pieChartLabels = [];
-    this.chartConfig.pieChartData = [];
-    this.chartConfig.pieChartType = 'pie';
-    this.chartConfig.pieChartLegend = true;
-    this.chartConfig.pieChartPlugins = [];
-    this.chartConfig.pieChartColors = [
-      {
-        backgroundColor: ['#81C784', '#FF8A65', '#64B5F6', '#FFD54F', '#9575CD'],
-      },
-    ];
+    this.initPieChart();
+    this.initDaugnatChart();
+  }
 
+  public initDaugnatChart() {
     this.daugnatChartConfig.doughnutChartLabels = ['Total budget', 'Total expense'];
     this.daugnatChartConfig.doughnutChartData = [];
     this.daugnatChartConfig.doughnutChartType = 'doughnut';
@@ -67,6 +62,18 @@ export class DashboardComponent implements OnInit {
     ];
   }
 
+  public initPieChart() {
+    this.chartConfig.pieChartLabels = [];
+    this.chartConfig.pieChartData = [];
+    this.chartConfig.pieChartType = 'pie';
+    this.chartConfig.pieChartLegend = true;
+    this.chartConfig.pieChartPlugins = [];
+    this.chartConfig.pieChartColors = [
+      {
+        backgroundColor: ['#81C784', '#FF8A65', '#64B5F6', '#FFD54F', '#9575CD'],
+      },
+    ];
+  }
   // Pie
   public pieChartOptions: ChartOptions = {
     legend: { display: true, position: 'right' }
@@ -74,30 +81,30 @@ export class DashboardComponent implements OnInit {
 
 
   ngOnInit() {
-
+    //Load all the expenses
     this.loadAllExpense();
-    this.loadAllCategories();
+    //Load total Budget
     this.loadAllBudgets();
-    this.loadAllExpenseChartData();
+    //Load all the chart data
+    this.loadChartData();
   }
 
+  /*
+  * To load all the expense data
+  */
   public loadAllExpense() {
     this.expenseSrv
       .getAllExpenses()
       .then((res: any) => {
-        console.log(res);
-
         if (res.data) {
           this.expenses = res.data;
         }
-        for (let i = 1; i <= res.data.count; i++) {
-          this.totalList.push(1);
-        }
-
       });
-
   }
 
+  /*
+  * To load Total budget from api
+  */
   public loadAllBudgets() {
     this.budgetSrv
       .getAllBudgets()
@@ -109,16 +116,23 @@ export class DashboardComponent implements OnInit {
         }
       })
   }
-  public loadAllExpenseChartData() {
+
+  /*
+  * To load chart data from api
+  */
+  public loadChartData() {
     this.expenseSrv
       .getAllExpenseChartData()
       .then((res: any) => {
-        if (res.data) {
+        if (res.data &&  res.data.length>0) {
           this.prepareChartData(res.data);
         }
       });
   }
 
+  /*
+ * To prepare chart data,in required format
+ */
   public prepareChartData(expense) {
 
     var result: any = _.chain(expense)
@@ -134,6 +148,7 @@ export class DashboardComponent implements OnInit {
       labels: [],
       amounts: []
     }
+
     result.forEach((e: any) => {
       final.labels.push(e.category);
       let amt = 0;
@@ -156,16 +171,18 @@ export class DashboardComponent implements OnInit {
     this.totalExpense = totalExpense
 
 
-    const percentage = (totalExpense / this.totalBudget.amount) * 100;
+    const percentage = (this.totalExpense / this.totalBudget.amount) * 100;
     const daugnatData: any = [100 - percentage, percentage]
 
     this.daugnatChartConfig.doughnutChartLabels = ['Remaining budget', 'Total expense'];
     this.daugnatChartConfig.doughnutChartData = [daugnatData];
 
-    console.log(this.daugnatChartConfig)
   }
 
-  addExpense(expense: any) {
+  /*
+  *Method to add new expense in the server
+  */
+  public addExpense(expense: any) {
     this.expenseSrv
       .addExpense(expense)
       .then((res: any) => {
@@ -174,30 +191,11 @@ export class DashboardComponent implements OnInit {
       })
   }
 
-  onClickSubmit(data) {
-    data.date = new Date(data.date);
-    console.log(data);
-    this.addExpense(data)
-  }
+  /*
+  * Method to open up a material dialog for edit expense.
+  */
 
-  loadAllCategories() {
-    this.categorySrv
-      .getAllCategories()
-      .then((res: any) => {
-        console.log(res);
-        const data = res.data;
-        this.categories = data;
-      })
-      .catch(e => {
-        console.error("Error occured while loading categories")
-      })
-  }
-
-  editExpense(expense: any) {
-    this.openEditExpenseModal(expense);
-  }
-
-  openEditExpenseModal(expense): void {
+  public openEditExpenseModal(expense): void {
     const dialogRef = this.dialog.open(EditExpenseDialogComponent, {
       width: '600px',
       data: expense
@@ -214,7 +212,7 @@ export class DashboardComponent implements OnInit {
             console.log("Updated successfully");
             this.loadAllExpense();
             this.loadAllBudgets();
-            this.loadAllExpenseChartData();
+            this.loadChartData();
 
           })
 
@@ -223,6 +221,9 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  /*
+  * Method to open up a material dialog for add expense.
+  */
   openAddExpenseModal(): void {
     const dialogRef = this.dialog.open(AddExpenseDialogComponent, {
       width: '600px',
@@ -240,35 +241,68 @@ export class DashboardComponent implements OnInit {
             console.log(res);
             this.loadAllExpense();
             this.loadAllBudgets();
-            this.loadAllExpenseChartData();
+            this.loadChartData();
           });
       }
 
     });
   }
 
-    openDeleteExpenseModal(expense): void {
-      const dialogRef = this.dialog.open(DeleteExpenseDailogComponent, {
-        width: '450px',
-        data: {}
-      });
-  
-      dialogRef.afterClosed().subscribe((result: any) => {
+  /*
+  * Method to open up a material dialog for delete expense.
+  */
+  openDeleteExpenseModal(expense): void {
+    const dialogRef = this.dialog.open(DeleteExpenseDailogComponent, {
+      width: '450px',
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      console.log(result);
+
+      if (result) {
         console.log(result);
-  
-        if (result) {
-          console.log(result);
-          expense.deleted = true;
-          this.expenseSrv
-            .updateExpense(expense._id,expense)
-            .then((res: any) => {
-              console.log(res);
-              this.loadAllExpense();
-              this.loadAllBudgets();
-              this.loadAllExpenseChartData();
-            });
+        expense.deleted = true;
+        this.expenseSrv
+          .updateExpense(expense._id, expense)
+          .then((res: any) => {
+            //after update loading all fresh data
+            this.loadAllExpense();
+            this.loadAllBudgets();
+            this.loadChartData();
+          });
+      }
+
+    });
+  }
+
+  /*
+* Method to open up a material dialog for undo delete expense.
+*/
+  openUndoDeleteExpenseModal(expense): void {
+    const dialogRef = this.dialog.open(UndoDeleteExpenseDialogComponent, {
+      width: '450px',
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      console.log(result);
+
+      if (result) {
+        console.log(result);
+        if (expense.deleted) {
+          expense.deleted = false;
         }
-  
-      });
+        this.expenseSrv
+          .updateExpense(expense._id, expense)
+          .then((res: any) => {
+            //after update loading all fresh data
+            this.loadAllExpense();
+            this.loadAllBudgets();
+            this.loadChartData();
+          });
+      }
+
+    });
   }
 }

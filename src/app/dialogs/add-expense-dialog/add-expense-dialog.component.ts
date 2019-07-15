@@ -27,7 +27,9 @@ export class AddExpenseDialogComponent implements OnInit {
       .then((res: any) => {
         console.log(res);
         const data = res.data;
-        this.categories = data;
+        this.categories = data.filter((c)=>{
+          return !c.deleted;
+        });
       })
       .catch(e => {
         console.error("Error occured while loading categories")

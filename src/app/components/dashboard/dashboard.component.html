@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <div class="row m8">
+  <div class="row ">
 
     <div class="col-6">
       <mat-card class="mt16">
@@ -56,6 +56,8 @@
     </div>
 
   </div>
+
+  
   <div class="row mt32">
     <div class="col">
       <button mat-raised-button color="primary" (click)="openAddExpenseModal()">Add expense</button>
@@ -68,42 +70,59 @@
         [footerHeight]="50" [rowHeight]="50" [limit]="5">
         <ngx-datatable-column name="Edit">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            <i (click)="editExpense(row)" class="fas fa-pencil-alt"></i>
+            <i (click)="openEditExpenseModal(row)" class="fas fa-pencil-alt"></i>
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column name="Deleted">
-      
-            <ng-template let-row="row"    ngx-datatable-cell-template>
-            {{row.deleted? 'true':'false'}}
-            </ng-template>
-          </ngx-datatable-column>
+
         <ngx-datatable-column name="category">
-      
-          <ng-template let-row="row" [ngClass]="{red: row?.deleted , white: !row?.deleted}"    ngx-datatable-cell-template>
-            {{row.category.name}}
+
+          <ng-template let-row="row"  ngx-datatable-cell-template>
+            <div *ngIf="row.deleted">
+              <s> {{row.category.name}}</s>
+            </div>
+            <div *ngIf="!row.deleted">
+              {{row.category.name}}
+            </div>
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column name="Item Name">
-      
-          <ng-template let-row="row"    ngx-datatable-cell-template>
-            {{row.itemName}}
+
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <div *ngIf="row.deleted">
+              <s> {{row.itemName}}</s>
+            </div>
+            <div *ngIf="!row.deleted">
+              {{row.itemName}}
+            </div>
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column name="Amount">
 
-          <ng-template let-row="row"    ngx-datatable-cell-template>
-            {{row.amount}}
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <div *ngIf="row.deleted">
+              <s> {{row.amount}}</s>
+            </div>
+            <div *ngIf="!row.deleted">
+              {{row.amount}}
+            </div>
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column name="Date">
-          
-          <ng-template let-row="row"     ngx-datatable-cell-template>
-            {{row.date|date}}
+
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <div *ngIf="row.deleted">
+              <s> {{row.date|date}}</s>
+            </div>
+            <div *ngIf="!row.deleted">
+              {{row.date|date}}
+            </div>
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column name="Edit">
+
+        <ngx-datatable-column name=" ">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            <i (click)="openDeleteExpenseModal(row)" class="far fa-trash-alt"></i>
+            <i *ngIf="!row.deleted"(click)="openDeleteExpenseModal(row)" class="far fa-trash-alt"></i>
+            <i *ngIf="row.deleted" (click)="openUndoDeleteExpenseModal(row)"  class="fas fa-undo"></i>
           </ng-template>
         </ngx-datatable-column>
       </ngx-datatable>

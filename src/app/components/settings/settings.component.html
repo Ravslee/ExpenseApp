@@ -7,7 +7,7 @@
       <input type="text" [(ngModel)]="totalBudget.amount" class="form-control">
     </div>
     <div class="col-4">
-      <button type="button" (click)="onUpdateTotalBudget()" class="btn btn-primary">Update</button>
+      <button mat-raised-button color="primary" (click)="onUpdateTotalBudget()" class="btn btn-primary">Update</button>
 
     </div>
   </div>
@@ -20,20 +20,36 @@
       <input type="text" [(ngModel)]="catName" class="form-control">
     </div>
     <div class="col-4">
-      <button type="button" (click)="onAddCategory()" class="btn btn-primary">Add </button>
+      <button mat-raised-button (click)="onAddCategory()" color="primary">Add </button>
 
     </div>
   </div>
 
 
-  <div class="row mt64">
+  <div class="row mt32">
     <div class="col-6">
-        <div class="categories-block">
-            <div class="list-group list-group-flush">
-                <a class="list-group-item list-group-item-action" *ngFor="let category of categories">{{category.name}}</a>
+      <div class="categories-block">
+        <div class="list-group list-group-flush">
+          <a class="list-group-item list-group-item-action " *ngFor="let category of categories">
+            <div *ngIf="!category.deleted">
+              {{category.name}}
+              <div class="float-right">
+                <i (click)="openDeleteCategoryDialog(category)" class="far fa-trash-alt"></i>
               </div>
+            </div>
+            <div *ngIf="category.deleted">
+              <s>{{category.name}}</s>
+              <!-- <div class="float-right" >
+                <i class="far fa-trash-alt"></i>
+              </div> -->
+            </div>
+
+
+          </a>
+
         </div>
-      
+      </div>
+
     </div>
   </div>
 </div>

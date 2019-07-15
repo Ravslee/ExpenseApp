@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CategoryService } from '../../services/category.service'
 import { BudgetService } from '../../services/budget.service'
+import { DeleteCategoryDialogComponent } from 'src/app/dialogs/delete-category-dialog/delete-category-dialog.component';
+import { MatDialog } from '@angular/material';
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
@@ -12,13 +14,13 @@ export class SettingsComponent implements OnInit {
   public totalBudget: any = {};
   public catName: any;
   constructor(private categorySrv: CategoryService,
-    private budgetSrv: BudgetService) { }
+    private budgetSrv: BudgetService, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.loadAllCategories();
     this.loadAllBudgets();
   }
-
+  //method to load budget data from server
   public loadAllBudgets() {
     this.budgetSrv
       .getAllBudgets()
@@ -30,6 +32,7 @@ export class SettingsComponent implements OnInit {
         }
       })
   }
+
   public onUpdateTotalBudget() {
     if (!this.totalBudget.amount) {
       alert("Please enter value for Total budget");
@@ -42,6 +45,7 @@ export class SettingsComponent implements OnInit {
 
   }
 
+  //method to update budget Data
   updateBudget(val, id) {
     const budget = { amount: +val }
     this.budgetSrv
@@ -56,6 +60,7 @@ export class SettingsComponent implements OnInit {
 
   }
 
+  //method to add budget Data if doesnt exists
   addBudget(val) {
     const budget = { amount: val }
     this.budgetSrv
@@ -69,6 +74,7 @@ export class SettingsComponent implements OnInit {
       });
   }
 
+  //method to add new Category if doesnt exists
   onAddCategory() {
     if (!this.catName) {
       alert("Please enter category name, to add")
@@ -86,6 +92,7 @@ export class SettingsComponent implements OnInit {
       });
   }
 
+  //method to load all Category 
   loadAllCategories() {
     this.categorySrv
       .getAllCategories()
@@ -99,4 +106,27 @@ export class SettingsComponent implements OnInit {
       })
   }
 
+ 
+  //method to show delete category dialog
+  openDeleteCategoryDialog(category): void {
+    const dialogRef = this.dialog.open(DeleteCategoryDialogComponent, {
+      width: '450px',
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      console.log(result);
+
+      if (result) {
+        category.deleted = true;
+        this.categorySrv
+          .updateCategory(category._id, category)
+          .then((res: any) => {
+            console.log(res);
+            this.loadAllCategories();
+          });
+      }
+
+    });
+  }
 }
