@@ -16,7 +16,7 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 ## Third party library used 
  * ng2-charts [ng2-charts](https://valor-software.com/ng2-charts/)
  * ngx-datatable [ngx-datatable](https://swimlane.gitbook.io/ngx-datatable/)
- * Lodash [Lodash] (https://lodash.com/)
+ * Lodash [Lodash](https://lodash.com/)
  * Angular material [angular material](https://material.angular.io/)
  * Bootstrap for Html styling [Bootstrap](https://getbootstrap.com/)
  * font-awesome for icons [Font-awesome](https://fontawesome.com/)
